@@ -1,6 +1,7 @@
 # Simple 3D Math Library
 > A simple collection of stb-style C++ header files that aims to create a simple, readable, and expandable implemenation of some Linear Algebra constructs and operations for use in 3D graphics.
-[[License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Including in your project
 Simply drop whichever header(s) you need into your project. Then define the appropriate `XXXX_IMPL` macro before using to get the implementation as well.
