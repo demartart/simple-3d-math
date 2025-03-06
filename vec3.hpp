@@ -29,14 +29,24 @@
     This is a simple 3D Vector implementation. It contains basic operator overloading
     for the standard Vector Space operations like addition, subtraction, and scalar 
     multiplication. It also includes implementations of the dot & cross products.
+
+    Define VEC3_IMPL before including this file in only one C++ source file to create
+    the implementation. 
+
+    You can also define your own math function implementations if you don't want to 
+    use the C STL ones. Just define S3M_FABSF(x) and/or S3M_SQRT(x) before 
+    including this file.
 */
 
-// You may define OWN_MATH if you've got your own implementation of the fabsf & sqrt 
-// functions that you'd like to use instead of the C stl ones.
-#ifndef OWN_MATH
+#ifndef S3M_FABSF
 #include <cmath>
+#define S3M_FABSF(x) fabsf(x)
 #endif
 
+#ifndef S3M_SQRT
+#include <cmath>
+#define S3M_SQRT(x) sqrt(x)
+#endif
 
 
 struct Vec3 {
@@ -64,9 +74,9 @@ struct Vec3 {
 
     friend bool operator ==(const Vec3 &l, const Vec3 &r) {
         return (
-            fabsf(l.x - r.x) < 0.001f
-            && fabsf(l.y - r.y) < 0.001f
-            && fabsf(l.z - r.z) < 0.001f
+            S3M_FABSF(l.x - r.x) < 0.001f
+            && S3M_FABSF(l.y - r.y) < 0.001f
+            && S3M_FABSF(l.z - r.z) < 0.001f
         );
     }
 
@@ -112,7 +122,7 @@ Vec3 Vec3::operator *=(const float &r) {
 }
 
 float Vec3::length() {
-    return sqrtf(x * x + y * y + z * z);
+    return S3M_SQRT(x * x + y * y + z * z);
 }
 
 float Vec3::dot(const Vec3 &other) {
