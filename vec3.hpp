@@ -1,6 +1,5 @@
 #pragma once
 
-
 /*
     MIT License
 
@@ -80,10 +79,10 @@ struct Vec3 {
         );
     }
 
-    float length();
+    float length() const;
 
-    float dot(const Vec3 &other);
-    Vec3 cross(const Vec3 &other);
+    float dot(const Vec3 &other) const;
+    Vec3 cross(const Vec3 &other) const;
 };
 
 #ifdef VEC3_IMPL
@@ -121,15 +120,15 @@ Vec3 Vec3::operator *=(const float &r) {
     return *this;
 }
 
-float Vec3::length() {
+float Vec3::length() const {
     return S3M_SQRT(x * x + y * y + z * z);
 }
 
-float Vec3::dot(const Vec3 &other) {
+float Vec3::dot(const Vec3 &other) const {
     return x * other.x + y * other.y + z * other.z;
 }
 
-Vec3 Vec3::cross(const Vec3 &other) {
+Vec3 Vec3::cross(const Vec3 &other) const {
     return Vec3(
         y * other.z + z * other.y,
         -(x * other.z + z * other.x),
