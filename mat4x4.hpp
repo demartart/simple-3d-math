@@ -37,8 +37,7 @@
 
     TODO:
         * calculating the determinant
-        * scalar multiplication
-        * matrix multiplication
+        * transpose
 */
 
 #ifndef S3M_FABSF
@@ -51,24 +50,50 @@
 #define S3M_MEMCPY(to, from, sz) memcpy(to, from, sz)
 #endif
 
+#include <iostream>
+
 struct Mat4x4 {
     float *data;
     static inline size_t index(int i, int j) { return i + 4 * j; }
 
+    // TODO: Basic constructor w/o params that constructs the identity matrix
     Mat4x4(const float *nums);
     Mat4x4(const Mat4x4 &o) = default;
     Mat4x4(Mat4x4 &&r);
 
     Mat4x4 operator +=(const Mat4x4 &r);
     Mat4x4 operator -=(const Mat4x4 &r);
+    Mat4x4 operator *=(const float &r);
+    Mat4x4 operator *=(const Mat4x4 &r);
 
     friend Mat4x4 operator +(Mat4x4 l, const Mat4x4 &r) {
-        l += r;
-        return l;
+        // Go figures, if you pass a pointer and modify it, it modifies the data at that pointer,
+        // meaning that using this operator would modify one of the original matrices
+        // As a workaround, I'm constructing a new matrix here in place
+        //
+        // it's not a great solution since adding now secretly allocates memory & copies data, 
+        // but at least adding two matrices doesn't mutate one of them
+        Mat4x4 nl(l.data);
+        nl += r;
+        return nl;
     }
     friend Mat4x4 operator -(Mat4x4 l, const Mat4x4 &r) {
-        l -= r;
-        return l;
+        // see operator +()
+        Mat4x4 nl(l.data);
+        nl -= r;
+        return nl;
+    }
+    friend Mat4x4 operator *(Mat4x4 l, const float &r) {
+        // see operator +()
+        Mat4x4 nl(l.data);
+        nl *= r;
+        return nl;
+    }
+    friend Mat4x4 operator *(Mat4x4 l, const Mat4x4 &r) {
+        // see operator +()
+        Mat4x4 nl(l.data);
+        nl *= r;
+        return nl;
     }
     friend bool operator ==(const Mat4x4 &l, const Mat4x4 &r) {
         for (int j = 0; j < 4; j++) {
@@ -81,6 +106,8 @@ struct Mat4x4 {
 
         return true;
     }
+
+    void Print() const;
 };
 
 #ifdef MAT4X4_IMPL
@@ -113,6 +140,36 @@ Mat4x4 Mat4x4::operator -=(const Mat4x4 &r) {
     }
 
     return *this;
+}
+
+Mat4x4 Mat4x4::operator *=(const float &r) {
+    for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < 4; i++) {
+            data[ index(i, j) ] *= r;
+        }
+    }
+
+    return *this;
+}
+
+Mat4x4 Mat4x4::operator *=(const Mat4x4 &r) {
+    for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < 4; i++) {
+            data[ index(i, j) ] *= r.data[ index(j, i) ];
+        }
+    }
+
+
+    return *this;
+}
+
+void Mat4x4::Print() const {
+    for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < 4; i++) {
+            std::cout << data[ index(i, j) ] << " ";
+        }
+        std::cout << "\n";
+    }
 }
 
 #endif
