@@ -135,6 +135,29 @@ void MatrixMultTest() {
     ASSERT(mult_two == exp_two, "Matrix Multiplication Failed (2)");
 }
 
+void DeterminantTest() {
+    std::cout << "Determinant \n";
+
+    float one_arr[] = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    };
+    float two_arr[] = {
+        6, 1, 3, 4,
+        8, 7, 4, 9,
+        8, 6, 2, 1,
+        2, 2, 3, 9
+    };
+    Mat4x4 one(one_arr);
+    Mat4x4 two(two_arr);
+    float one_det = one.det();
+    float two_det = two.det();
+    ASSERT(one_det == 1.0f, "Determinant failed (1)");
+    ASSERT(two_det == 52.0f, "Determinant failed (2)");
+}
+
 int main() {
     AddTest();
     std::cout << "Matrix Addition Check Succeeded\n" << "\n";
@@ -147,6 +170,9 @@ int main() {
 
     MatrixMultTest();
     std::cout << "Matrix Multiplication Check Succeeded\n" << "\n";
+
+    DeterminantTest();
+    std::cout << "Determinant Check Succeeded\n" << "\n";
     
     std::cout << "All Checks Passed.\n";
     return 0;

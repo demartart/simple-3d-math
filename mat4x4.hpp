@@ -107,7 +107,7 @@ struct Mat4x4 {
         return true;
     }
 
-    void Print() const;
+    float det() const;
 };
 
 #ifdef MAT4X4_IMPL
@@ -163,13 +163,47 @@ Mat4x4 Mat4x4::operator *=(const Mat4x4 &r) {
     return *this;
 }
 
-void Mat4x4::Print() const {
-    for (int j = 0; j < 4; j++) {
-        for (int i = 0; i < 4; i++) {
-            std::cout << data[ index(i, j) ] << " ";
-        }
-        std::cout << "\n";
+namespace __int {
+    float mat2_det(float a11, float a12, float a21, float a22) {
+        return a11 * a22 - a12 * a21;
     }
+
+    float mat3_det(
+        float a11, float a12, float a13,
+        float a21, float a22, float a23,
+        float a31, float a32, float a33
+    ) {
+        return (
+               a11 * mat2_det(a22, a23, a32, a33)
+             - a12 * mat2_det(a21, a23, a31, a33)
+             + a13 * mat2_det(a21, a22, a31, a32)
+        );
+    }
+}
+
+float Mat4x4::det() const {
+    return (
+        data[ index(0, 0) ] * __int::mat3_det(
+            data[ index(1, 1) ], data[ index(2, 1) ], data[ index(3, 1) ], 
+            data[ index(1, 2) ], data[ index(2, 2) ], data[ index(3, 2) ], 
+            data[ index(1, 3) ], data[ index(2, 3) ], data[ index(3, 3) ]
+        )
+        - data[ index(1, 0) ] * __int::mat3_det(
+            data[ index(0, 1) ], data[ index(2, 1) ], data[ index(3, 1) ], 
+            data[ index(0, 2) ], data[ index(2, 2) ], data[ index(3, 2) ], 
+            data[ index(0, 3) ], data[ index(2, 3) ], data[ index(3, 3) ]
+        )
+        + data[ index(2, 0) ] * __int::mat3_det(
+            data[ index(0, 1) ], data[ index(1, 1) ], data[ index(3, 1) ], 
+            data[ index(0, 2) ], data[ index(1, 2) ], data[ index(3, 2) ], 
+            data[ index(0, 3) ], data[ index(1, 3) ], data[ index(3, 3) ]
+        )
+        - data[ index(3, 0) ] * __int::mat3_det(
+            data[ index(0, 1) ], data[ index(1, 1) ], data[ index(2, 1) ], 
+            data[ index(0, 2) ], data[ index(1, 2) ], data[ index(2, 2) ], 
+            data[ index(0, 3) ], data[ index(1, 3) ], data[ index(2, 3) ]
+        )
+    );
 }
 
 #endif
