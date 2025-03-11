@@ -35,6 +35,9 @@
     You can also define your own math function implementations if you don't want to 
     use the C STL ones. Just define S3M_FABSF(x) and/or S3M_SQRT(x) before 
     including this file.
+
+    TODO:
+     - projection onto another vec3
 */
 
 #ifndef S3M_FABSF

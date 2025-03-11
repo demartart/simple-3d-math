@@ -36,8 +36,7 @@
     before including this file.
 
     TODO:
-        * calculating the determinant
-        * transpose
+        - transpose
 */
 
 #ifndef S3M_FABSF
