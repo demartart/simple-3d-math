@@ -9,7 +9,7 @@ Simply drop whichever header(s) you need into your project. Then define the appr
 ## Usage
 Each header file has a basic rundown of the functionality they provide. For ease of reference, here's a quick overview of each header:
  - **vec3.hpp**: A 3D vector implementation. Contains basic arithmetic operations as well as dot and cross products.
- - **mat4x4.hpp**: A 4x4 matrix implementation. Contains some basic arithmetic operations. Determinant evaluation is planned.
+ - **mat4x4.hpp**: A 4x4 matrix implementation. Contains some basic arithmetic operations as well as evaluation of the determinant. 
 
 More headers/more functionality within a header may be added periodically. 
 
